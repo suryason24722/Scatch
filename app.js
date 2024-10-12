@@ -17,7 +17,10 @@ app.use('/owners', ownersRouter)
 app.use('/users', usersRouter)
 app.use('/products', productsRouter)
 
-
+app.get('/', function (req, res) {
+    res.send('i am here');
+})
+    
 app.listen(3000, (req, res) => {
     console.log("Server is running on port 3000");
 });
