@@ -5,6 +5,9 @@ const productModel = require("../models/productModel");
 const userModel = require("../models/userModel");
 const ownerModel = require("../models/ownerModel");
 
+const upload = require("../config/multer-config");
+
+
 router.get("/", function (req, res) {
   let error = req.flash("error");
   res.render("index", { error, loggedin: false });
@@ -28,7 +31,20 @@ router.get("/cart", isLoggedIn, async function (req, res) {
     return;
   }
 
-  const bill = Number(user.cart[0].price) + 20 - Number(user.cart[0].discount);
+  // const bill = Number(user.cart[0].price) + 20 - Number(user.cart[0].discount);
+
+  // Initialize the total bill with the platform fee
+  let bill= 20;
+
+  // Calculate the total bill using forEach
+  user.cart.forEach((item) => {
+    const price = parseFloat(item.price) || 0;
+    const discount = parseFloat(item.discount) || 0;
+    let itemTotal = price - discount ;
+    bill += itemTotal;
+
+    // console.log(`Price: ${price}, Discount: ${discount}, Item Total: ${itemTotal}, Running Bill: ${bill}`);
+  });
 
   // Check if the logged-in user is in the ownerModel
   const owner = await ownerModel.findOne({ email: req.user.email });
@@ -36,7 +52,7 @@ router.get("/cart", isLoggedIn, async function (req, res) {
   // Set isAdmin to true if the user exists in the ownerModel
   const isAdmin = !!owner;
 
-  res.render("cart", { user, bill, isAdmin});
+  res.render("cart", { user, isAdmin, bill });
 
 });
 
@@ -47,5 +63,38 @@ router.get("/addtocart/:productId", isLoggedIn, async function (req, res) {
   req.flash("success", "Product added to cart");
   res.redirect("/shop");
 });
+
+
+router.get('/profile', isLoggedIn, async function (req, res) {
+  // res.send(req.user)
+
+  let user = await userModel.findOne({ email: req.user.email })
+  // console.log(user);
+
+  res.render('user_profile', { user })
+
+})
+
+router.get('/profile/upload', function (req, res) {
+  res.render('profile_upload')
+})
+
+router.post('/upload', isLoggedIn, upload.single('image'), async function (req, res) {
+  // console.log(req.file);
+  let user = await userModel.findOne({ email: req.user.email })
+  user.profilepic = req.file.buffer
+  await user.save()
+  res.redirect('/profile')
+
+
+})
+
+router.post("/update/:id", async (req, res) => {
+  let { fullname, email, contact } = req.body
+  let updatedUser = await userModel.findOneAndUpdate({ _id: req.params.id }, { fullname, email, contact }, { new: true })
+  // console.log(updatedUser);
+
+  res.redirect('/profile')
+})
 
 module.exports = router;

@@ -4,13 +4,13 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
+// const upload = require("../config/multer-config");
 const db = require("./config/mongoose-connection")
 
 const ownersRouter = require('./routes/ownersRouter');
 const usersRouter = require('./routes/usersRouter');
 const productsRouter = require('./routes/productsRouter');
 const index = require('./routes/index');
-
 const expressSession = require('express-session');
 const flash = require('connect-flash');
 

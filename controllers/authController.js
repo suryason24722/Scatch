@@ -7,11 +7,11 @@ const ownerModel = require("../models/ownerModel");
 
 module.exports.registerUser = async function (req, res) {
   try {
-    let { fullname, email, password } = req.body;
+    let { fullname, email, password, contact } = req.body;
 
     let user = await userModel.findOne({ email: email });
     if (user) {
-      req.flash("error", "You already have an acoount , please login again.");
+      req.flash("error", "You already have an account , please login again.");
       return res.redirect("/");
     }
 
@@ -23,12 +23,22 @@ module.exports.registerUser = async function (req, res) {
             fullname,
             email,
             password: hash,
+            contact
           });
 
           // let token = jwt.sign({ email, id: user._id }, "hey i am secret")
           let token = generateToken(user);
           res.cookie("token", token);
-          res.send("user created successfully");
+
+          // Check if the logged-in user is in the ownerModel
+          const owner = await ownerModel.findOne({ email: email });
+
+          // Set isAdmin to true if the user exists in the ownerModel
+          const isAdmin = !!owner;
+
+          req.session.isAdmin = isAdmin;
+
+          res.redirect("/shop");
 
           // res.send(user);
         }
