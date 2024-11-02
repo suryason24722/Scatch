@@ -3,7 +3,7 @@
 
 
     <% if(success.length>0){ %>
-        <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-blue-500">
+        <div id="flash-container" class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500">
             <span class="inline-block mt-1 mb-1 text-white">
                 <%= success %>
             </span>
@@ -40,7 +40,8 @@
                                     <img class="h-[12rem]"
                                         src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
                                 </div>
-                                <div class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
+                                <div
+                                    class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
                                     <div>
                                         <h3>
                                             <%= product.name %>
@@ -58,4 +59,6 @@
                     </div>
                 </div>
             </div>
+            <script src="/javascripts/script.js"></script>
+
             <%- include('./partials/footer') %>
