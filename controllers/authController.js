@@ -9,6 +9,13 @@ module.exports.registerUser = async function (req, res) {
   try {
     let { fullname, email, password, contact } = req.body;
 
+    // Check if any of the required fields are empty
+    if (!fullname || !email || !password || !conatct) {
+      req.flash('error', 'Please fill all the details');
+
+      return res.redirect('/'); // Redirect back to the registration form
+    }
+
     let user = await userModel.findOne({ email: email });
     if (user) {
       req.flash("error", "You already have an account , please login again.");

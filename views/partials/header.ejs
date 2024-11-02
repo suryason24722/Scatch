@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-        <script src="https://cdn.tailwindcss.com"></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-    <body class="font-['helvetica_now_display']">
-        <nav class="w-full flex justify-between px-5 py-3">
-            <h3 class="text-3xl text-black">Scatch</h3>
-            <% var loggedin=typeof loggedin !=='undefined' ? loggedin : true %>
-                <% if(loggedin){ %>
-                    <div class="flex gap-16 text-xl">
-                        <% if (isAdmin) { %>
-                            <a href="/owners/admin">Admin panel</a>
-                          <% } %>
-                        <a href="/shop">Shop</a>
-                        <a href="/cart">Cart</a>
-                        <a href="/profile">My account</a>
-                        <a class="text-red-500" href="/users/logout">Logout</a>
-                    </div>
-                    <% } %>
+<body class="font-['helvetica_now_display']">
+    <nav class="w-full flex justify-between px-5 py-3">
 
-        </nav>
+        <h3 class="text-3xl text-black flex items-center gap-1">
+            <a href="/" class="flex items-center gap-1">
+                <img src="/images/letter-s.png" alt="Logo Icon" class="w-8 h-8" />
+                Scatch
+            </a>
+        </h3>
+
+        
+        <div class="flex gap-16 text-xl">
+            <% if (isAdmin) { %>
+                <a href="/owners/admin">Admin panel</a>
+                <% } %>
+                    <a href="/shop"><i class="ri-store-3-fill"></i> Shop</a>
+                    <a href="/cart"> <i class="ri-shopping-cart-fill"></i> Cart</a>
+                    <a href="/profile"><i class="ri-account-pin-circle-fill"></i> My account</a>
+                    <a class="text-red-500" href="/users/logout"><i class="ri-logout-box-r-fill"></i>Logout</a>
+        </div>
+
+
+    </nav>
+<hr>

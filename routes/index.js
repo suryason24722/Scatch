@@ -7,10 +7,32 @@ const ownerModel = require("../models/ownerModel");
 
 const upload = require("../config/multer-config");
 
+// Middleware to set isAdmin for all routes
+router.use(async (req, res, next) => {
+  if (req.user) {
+    const owner = await ownerModel.findOne({ email: req.user.email });
+    req.session.isAdmin = !!owner; // Save in session for consistency
+  }
+  next();
+});
 
-router.get("/", function (req, res) {
+
+router.get("/", async function (req, res) {
+
   let error = req.flash("error");
-  res.render("index", { error, loggedin: false });
+
+  // This will not work because we cannot use isLoggedIn midddleware on / route otherwise it will not display after logout
+  // let user = await userModel.findOne({ email: req.user.email })
+
+  // Check if the logged-in user is in the ownerModel
+  // const owner = await ownerModel.findOne({ email: req.user.email });
+
+  // Set isAdmin to true if the user exists in the ownerModel
+  // const isAdmin = !!owner;
+
+  const isAdmin = req.session.isAdmin || false;
+
+  res.render("index", { error, loggedin: false, isAdmin });
 });
 
 router.get("/shop", isLoggedIn, async function (req, res) {
@@ -34,13 +56,13 @@ router.get("/cart", isLoggedIn, async function (req, res) {
   // const bill = Number(user.cart[0].price) + 20 - Number(user.cart[0].discount);
 
   // Initialize the total bill with the platform fee
-  let bill= 20;
+  let bill = 20;
 
   // Calculate the total bill using forEach
   user.cart.forEach((item) => {
     const price = parseFloat(item.price) || 0;
     const discount = parseFloat(item.discount) || 0;
-    let itemTotal = price - discount ;
+    let itemTotal = price - discount;
     bill += itemTotal;
 
     // console.log(`Price: ${price}, Discount: ${discount}, Item Total: ${itemTotal}, Running Bill: ${bill}`);
