@@ -10,7 +10,7 @@ module.exports.registerUser = async function (req, res) {
     let { fullname, email, password, contact } = req.body;
 
     // Check if any of the required fields are empty
-    if (!fullname || !email || !password || !conatct) {
+    if (!fullname || !email || !password || !contact) {
       req.flash('error', 'Please fill all the details');
 
       return res.redirect('/'); // Redirect back to the registration form
