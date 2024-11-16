@@ -3,11 +3,11 @@ const config = require('config')
 process.env.DEBUG = 'development:mongoose';
 const dbgr = require("debug")("development:mongoose")
 
-const MONGODB_URI = process.env.MONGODB_URI
+const AtlasDB_URI = process.env.AtlasDB_URI
 
 const mongoose = require('mongoose')
 mongoose
-    .connect(`${config.get("MONGODB_URI")}`)
+    .connect(`${config.get("AtlasDB_URI")}`)
 
     .then(function () {
 

@@ -1,3 +1,3 @@
 {
-    "MONGODB_URI":"mongodb://127.0.0.1:27017/scatch"
+    "AtlasDB_URI": "mongodb+srv://sunkarma24722:H46iw1uu21QQjnRL@cluster0.fgnsc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 }
