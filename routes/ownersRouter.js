@@ -1,5 +1,6 @@
 // process.env.NODE_ENV = "development";
-process.env.NODE_ENV = "development";
+// console.log('NODE_ENV:', process.env.NODE_ENV);
+
 
 const express = require("express");
 const router = express.Router();

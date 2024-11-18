@@ -5,8 +5,14 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 
 // const upload = require("../config/multer-config");
-
 //"MONGODB_URI":"mongodb://127.0.0.1:27017/scatch"
+
+
+// process.env.NODE_ENV = "development";
+
+require('dotenv').config();
+// console.log('NODE_ENV:', process.env.NODE_ENV);
+
 
 const db = require("./config/mongoose-connection")
 
