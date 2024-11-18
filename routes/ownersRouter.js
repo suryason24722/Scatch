@@ -53,8 +53,14 @@ router.get("/admin", isLoggedIn, async (req, res) => {
   // Check if the logged-in user is in the ownerModel
   const owner = await ownerModel.findOne({ email: req.user.email });
 
+
   // Set isAdmin to true if the user exists in the ownerModel
   const isAdmin = !!owner;
+
+  
+  if(!owner){
+    return res.send("you don't have access to admin panel")
+  }
 
   res.render("createproducts", { success, isAdmin });
 

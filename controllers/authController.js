@@ -90,7 +90,7 @@ module.exports.loginUser = async function (req, res) {
   });
 };
 
-module.exports.logoutUser = function (req, res) {
+module.exports.logoutUser = async function (req, res) {
   req.flash("error", "Logged out successfully"); // when user is logged out successfully send a flash message
   res.clearCookie("token"); // clear cookie in browser
   res.redirect("/");
