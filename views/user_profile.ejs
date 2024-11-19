@@ -11,46 +11,63 @@
 </head>
 
 <body>
-    <div class="w-full min-h-screen bg-zinc-900 p-4 text-white ">
-        <div class="w-full flex justify-between ">
-            <a class="px-3 py-2 bg-green-500 rounded-md text-sm" href="/shop">Go to Shop</a>
-            <a class="px-3 py-2 bg-red-500 rounded-md text-sm" href="/users/logout">Logout</a>
+    <!-- Display success message if available -->
+    <% if(success.length>0){ %>
+        <div id="flash-container"
+            class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-yellow-500">
+            <span class="inline-block mt-1 mb-1 text-white">
+                <%= success %>
+            </span>
         </div>
+        <% } %>
 
-        <div class="flex gap-4 flex-col items-center justify-center">
+            <div class="w-full min-h-screen bg-zinc-900 p-4 text-white ">
+                <div class="w-full flex justify-between ">
+                    <a class="px-3 py-2 bg-green-500 rounded-md text-sm" href="/shop">Go to Shop</a>
+                    <a class="px-3 py-2 bg-red-500 rounded-md text-sm" href="/users/logout">Logout</a>
+                </div>
 
-            <div class="w-20 h-20 rounded-md overflow-hidden">
-                <img class="w-full h-full object-cover "
-                    src="data:image/jpeg;base64,<%= user.profilepic.toString('base64') %>" alt="">
+                <div class="flex gap-4 flex-col items-center justify-center">
 
-            </div>
-            <a class="text-blue-500" href="/profile/upload">Upload your profile pic</a>
+                    <div class="w-20 h-20 rounded-md overflow-hidden">
+                        <img class="w-full h-full object-cover "
+                            src="data:image/jpeg;base64,<%= user.profilepic.toString('base64') %>" alt="">
 
-            <h1 class="text-3xl"><span class="text-yellow-500">Hello,</span>
-                <%= user.fullname %> ✨😃✨
-            </h1>
-
-            <div class="w-full h-full bg-zinc-900 p-10 text-white ">
-
-                <form action="/update/<%= user._id %>" method="post">
-                    <div class="flex gap-8 mt-3 p-10 flex-col items-center justify-center">
-                        <h1 class="text-3xl tracking-tighter">Your details are: </h1>
-
-                        <input class="px-5 py-2 w-1/2 border-2 border-zinc-900 rounded-md bg-zinc-700 outline-none"
-                            type="text" placeholder="Your name here" name="fullname" value="<%= user.fullname %>">
-                        <input class="px-5 py-2 w-1/2 border-2 border-zinc-900 rounded-md bg-zinc-700 outline-none"
-                            type="text" placeholder="Your email here" name="email" value="<%= user.email %>">
-                        <input class="px-5 py-2 w-1/2 border-2 border-zinc-900 rounded-md bg-zinc-700 outline-none"
-                            type="text" placeholder="Contact no." name="contact" value="<%= user.contact %>">
-                        <input class="px-3 py-2 w-200 bg-yellow-500 text-black rounded-md cursor-pointer" type="submit" value="Update">
                     </div>
-                </form>
+                    <a class="text-blue-500" href="/profile/upload">Upload your profile pic</a>
+
+                    <h1 class="text-3xl"><span class="text-yellow-500">Hello,</span>
+                        <%= user.fullname %> ✨😃✨
+                    </h1>
+
+                    <div class="w-full h-full bg-zinc-900 p-10 text-white ">
+
+                        <form action="/update/<%= user._id %>" method="post">
+                            <div class="flex gap-8 mt-3 p-10 flex-col items-center justify-center">
+                                <h1 class="text-3xl tracking-tighter">Your details are: </h1>
+
+                                <input
+                                    class="px-5 py-2 w-1/2 border-2 border-zinc-900 rounded-md bg-zinc-700 outline-none"
+                                    type="text" placeholder="Your name here" name="fullname"
+                                    value="<%= user.fullname %>">
+                                <input
+                                    class="px-5 py-2 w-1/2 border-2 border-zinc-900 rounded-md bg-zinc-700 outline-none"
+                                    type="text" placeholder="Your email here" name="email" value="<%= user.email %>">
+                                <input
+                                    class="px-5 py-2 w-1/2 border-2 border-zinc-900 rounded-md bg-zinc-700 outline-none"
+                                    type="text" placeholder="Contact no." name="contact" value="<%= user.contact %>">
+                                <input class="px-3 py-2 w-200 bg-yellow-500 text-black rounded-md cursor-pointer"
+                                    type="submit" value="Update">
+                            </div>
+                        </form>
+
+                    </div>
+
+                <div>
 
             </div>
+                    <script src="/javascripts/script.js"></script>
 
-        <div>
-
-    </div>
 
 </body>
 

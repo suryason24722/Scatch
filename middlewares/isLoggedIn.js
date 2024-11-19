@@ -18,3 +18,5 @@ module.exports = async function (req, res, next) {
         res.redirect("/");
     }
 }
+
+//cookie is not updating with latest email and _id before logging in again

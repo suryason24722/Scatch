@@ -5,6 +5,10 @@ const productModel = require("../models/productModel");
 const userModel = require("../models/userModel");
 const ownerModel = require("../models/ownerModel");
 
+const jwt = require("jsonwebtoken");
+const { generateToken } = require("../utils/generatetoken");
+
+
 const upload = require("../config/multer-config");
 
 // Middleware to set isAdmin for all routes
@@ -37,9 +41,9 @@ router.get("/", async function (req, res) {
 
 router.get("/shop", isLoggedIn, async function (req, res) {
   let products = await productModel.find();
-  let success = req.flash("success");
+  let success = req.flash("success");  //received from loginuser
   const isAdmin = req.session.isAdmin || false; // Default to false if not set
-  res.render("shop", { products, success, isAdmin });
+  res.render("shop", { products, success, isAdmin }); //sending products,sucess flash message and isAdmin to shop.ejs and rendering it
 });
 
 router.get("/cart", isLoggedIn, async function (req, res) {
@@ -87,15 +91,26 @@ router.get("/addtocart/:productId", isLoggedIn, async function (req, res) {
 });
 
 
+// router.get('/profile', isLoggedIn, async function (req, res) {
+//   let user = await userModel.findOne({ email: req.user.email })
+
+//   res.render('user_profile', { user })
+
+// })
+
 router.get('/profile', isLoggedIn, async function (req, res) {
-  // res.send(req.user)
+  try {
+    let user = await userModel.findOne({ email: req.user.email });
 
-  let user = await userModel.findOne({ email: req.user.email })
-  // console.log(user);
+    // Retrieve the success flash message
+    let success = req.flash("success");
 
-  res.render('user_profile', { user })
-
-})
+    res.render('user_profile', { user,success });
+  } catch (error) {
+    // console.error(error);
+    res.status(500).send('Something went wrong');
+  }
+});
 
 router.get('/profile/upload', function (req, res) {
   res.render('profile_upload')
@@ -111,12 +126,48 @@ router.post('/upload', isLoggedIn, upload.single('image'), async function (req, 
 
 })
 
-router.post("/update/:id", async (req, res) => {
-  let { fullname, email, contact } = req.body
-  let updatedUser = await userModel.findOneAndUpdate({ _id: req.params.id }, { fullname, email, contact }, { new: true })
-  // console.log(updatedUser);
+// router.post("/update/:id", async (req, res) => {
+//   let { fullname, email, contact } = req.body
+//   let updatedUser = await userModel.findOneAndUpdate({ _id: req.params.id }, { fullname, email, contact }, { new: true })
+//   // console.log(updatedUser);
 
-  res.redirect('/profile')
-})
+//    // Generate a new token with the updated user data
+//    const newToken = generateToken(updatedUser);
+//    res.cookie("token", newToken)
+
+//   res.redirect('/profile')
+
+// })
+
+router.post("/update/:id", async (req, res) => {
+  let { fullname, email, contact } = req.body;
+
+  try {
+    // Update the user's details in the database
+    let updatedUser = await userModel.findOneAndUpdate(
+      { _id: req.params.id },
+      { fullname, email, contact },
+      { new: true }
+    );
+
+    // Generate a new token with the updated user data
+    const newToken = generateToken(updatedUser);
+
+    // Set the new token in the cookie
+    res.cookie("token", newToken)
+
+    // Set the updated user data in req.user
+    // req.user = updatedUser;
+
+    // Set flash message for successful profile update
+    req.flash("success", "Profile updated successfully!");
+
+    // Redirect to the profile route
+    res.redirect("/profile");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error updating profile.");
+  }
+});
 
 module.exports = router;
